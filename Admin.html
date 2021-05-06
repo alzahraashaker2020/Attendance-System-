@@ -1,0 +1,361 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="Scripts/jquery-3.0.0.min.js"></script>
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/css/dataTables.bootstrap4.min.css"
+        integrity="sha512-PT0RvABaDhDQugEbpNMwgYBCnGCiTZMh9yOzUsJHDgl/dMhD9yjHAwoumnUk3JydV3QTcIkNDuN40CJxik5+WQ=="
+        crossorigin="anonymous" />
+
+    <!-- Bootstrap core CSS -->
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css">
+    <style>
+        body {
+            background-image: url(bg_Employee.jpg);
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        #sec {
+            width: 80%;
+            margin-top: 5%;
+            margin-bottom: 4%;
+            margin-left: 6%;
+            display: inline-flex;
+            align-content: center;
+        }
+
+        #container {
+            margin: auto;
+            align-content: center;
+            /* border: 4px solid darkblue; */
+            border-radius: 20px;
+            width: 100%;
+            display: block;
+            margin-top: 2.5%;
+            text-align: center;
+
+
+        }
+
+
+
+        input[type="button"] {
+            border-radius: 10px;
+            width: 20%;
+            height: 60px;
+            /* rgb(214, 141, 200) */
+            background-color: rgb(214, 141, 200);
+            margin-left: 2.5%;
+
+        }
+
+        .card {
+            width: 100%;
+            border-radius: 20px;
+            background-color: rgb(214, 141, 200);
+
+        }
+
+
+        a {
+            color: white;
+        }
+
+
+
+        input[type=text] {
+            border-radius: 4px;
+            border: 2px solid #e47f86;
+            width: 50%;
+            height: 30px;
+            margin-top: 5px;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/dataTables.jqueryui.min.css">
+</head>
+
+<body>
+    <div id="container">
+        <section id="sec">
+            <input type="button" class="li col-3" id="empdata" value="All employee" />
+            <input type="button" class="li col-3" id="lateRep" value="Late Report" />
+            <input type="button" class="li col-3" id="repexc" value="Excuse report" />
+            <input type="button" class="li col-3" id="breif" value="New Employee" />
+        </section>
+    </div>
+    <div>
+        <div class="card">
+            <div class="card-body" id="cardBody" style="background-color:lightblue;">
+            </div>
+        </div>
+
+    </div>
+    <script src="jquery-3.5.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.5.3/umd/popper.min.js"
+        integrity="sha512-53CQcu9ciJDlqhK7UD8dZZ+TF2PFGZrOngEYM/8qucuQba+a+BXOIRsp9PoMNJI3ZeLMVNIxIfZLbG/CdHI5PA=="
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+        integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js"
+        integrity="sha512-BkpSL20WETFylMrcirBahHfSnY++H2O1W+UnEEO4yNIl+jI2+zowyoGJpbtk6bx97fBXf++WJHSSK2MV4ghPcg=="
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Bootstrap core JavaScript -->
+
+    <script src="//cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+
+
+    <script>
+
+
+        $('#empdata').on('click', () => {
+            var header = ` <table id="employeeTable" width="100%" border="2px solid black;" class="table text-white">
+                <thead>
+                    <th>Frist Name</th>
+                    <th>Last Name</th>
+                    <th>Address</th>
+                    <th>E-mail</th>
+                    <th>Age</th>
+                    <th>User Name</th>
+                </thead>
+            </table>`;
+
+            $('#cardBody').empty();
+            $('#cardBody').append(header);
+            $("#employeeTable").DataTable({
+                ajax: {
+                    url: "employees.json",
+                    type: "GET",
+                    error: function (e) { },
+                    dataSrc: function (d) {
+                        return d;
+                    }
+                },
+                columns: [
+                    { data: "fname" },
+                    { data: "lname" },
+                    { data: "address" },
+                    { data: "email" },
+                    { data: "age" },
+                    { data: "userName" }
+                ]
+            });
+        });
+
+
+        $('#lateRep').on('click', () => {
+            var header = ` <table id="employeeTable" width="100%" border="2px solid black;" class="table text-white">
+                <thead>
+                    <th>Frist Name</th>
+                    <th>randomCode</th>
+                    <th>Late Days</th>
+                    <th>Attend Days</th>
+                </thead>
+            </table>`;
+
+            $('#cardBody').empty();
+            $('#cardBody').append(header);
+            $("#employeeTable").DataTable({
+                ajax: {
+                    url: "employees.json",
+                    type: "GET",
+                    error: function (e) { },
+                    dataSrc: function (d) {
+                        return d;
+                    }
+                },
+                columns: [
+                    { data: "fname" },
+                    { data: "randomCode" },
+                    { data: "late" },
+                    { data: "attend" }
+
+                ]
+            });
+        });
+
+        $('#repexc').on('click', () => {
+            var header = ` <table id="employeeTable" width="100%" border="2px solid black;" class="table text-white">
+                <thead>
+                    <th>Frist Name</th>
+                    <th>randomCode</th>
+                    <th>Absent Days</th>
+                    <th>Late Days</th>
+                    <th>Excuses</th>
+                </thead>
+            </table>`;
+
+            $('#cardBody').empty();
+            $('#cardBody').append(header);
+            $("#employeeTable").DataTable({
+                ajax: {
+                    url: "employees.json",
+                    type: "GET",
+                    error: function (e) { },
+                    dataSrc: function (d) {
+                        return d;
+                    }
+                },
+                columns: [
+                    { data: "fname" },
+                    { data: "randomCode" },
+                    { data: "absent" },
+                    { data: "late" },
+                    { data: "excuse" }
+                ]
+            });
+        });
+
+        $('#breif').on('click', () => {
+            var header = ` <table id="employeeTable"  border="2px solid black;" class="table text-white">
+                <thead>
+                    <th>Frist Name</th>
+                    <th>Last Name</th> 
+                    <th>E-mail</th>
+                    <th>Address</th>                  
+                    <th>User Name</th>
+                    <th>Password</th>
+                    <th>Age</th>
+                    <th>randomCode</th>
+                    <th>New User</th>
+                </thead>
+            </table>`;
+            $('#cardBody').empty();
+            $('#cardBody').append(header);
+
+
+            //console.log(userData);
+            arr = [];
+            arrExist = [];
+            $("#employeeTable").DataTable({
+
+                ajax: {
+                    url: "employees.json",
+                    type: "GET",
+                    error: function (e) { },
+                    dataSrc: function (d) {
+                        arr = d;
+                        console.log(arr);
+                        for (i = 0; i < arr.length; i++) {
+                            console.log("السلام عليكم");
+                            if (arr[i].reallyEmp == 0) {
+                                arrExist.push(arr[i]);
+                                console.log(arrExist);
+                            }
+
+                        }
+                        console.log(arrExist[0].reallyEmp);
+                        console.log(arrExist);
+                        return arrExist;
+
+                    }
+
+                },
+                columns: [
+                    { data: "fname" },
+                    { data: "lname" },
+                    { data: "email" },
+                    { data: "address" },
+                    { data: "userName" },
+                    { data: "password" },
+                    { data: "age" },
+                    { data: "randomCode" },
+                    {
+                        defaultContent: `<button id="add" class="btn btn-success text-white">Add</button>\
+                        <button id="reject" class="btn btn-danger text-white">Reject</button>`
+                    }
+                ]
+
+            });
+            var table = $('#employeeTable').DataTable();
+            console.log(table)
+            $('#cardBody').on('click', 'tr', function () {
+                let test = $(this).children().last();
+                let nnnnn = $(this).children().last().prev().html();
+
+                console.log(test);
+                console.log(nnnnn);
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                } else {
+                    table.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+
+                }
+            });
+
+
+            $('#cardBody').on('click', '#reject', function () {
+                console.log("hi");
+                table.row('.selected').remove().draw(false);
+            });
+            $('#cardBody').on('click', '#add', function () {
+                console.log("hi", arrExist);
+                let rancode = $(this).parent().parent().children().last().prev().html();
+
+                let objElem = arrExist.find((e) => e.randomCode == rancode);
+                console.log("mjhtii", objElem);
+                objElem.reallyEmp = 1;
+                //console.log(objElem);
+                SaveData(objElem);
+                console.log(arrExist);
+                table.row('.selected').remove().draw(false);
+            });
+        });
+        //save Data
+        function SaveData(obj) {
+            //get json file//
+            let _url = "employees.json";
+            let arrnew = [];
+            let objelem = obj;
+            $.ajax({
+                url: _url,
+                type: "get",
+                success: function (data) {
+
+                    arrnew = data;
+                    console.log("json file", arrnew);
+                    let index = arrnew.findIndex((e) => e.randomCode == objelem.randomCode);
+                    arrnew.splice(index, 1);
+                    console.log("json file", arrnew);
+                    arrnew.push(objelem);
+                    console.log("json file", arrnew);
+
+
+                },
+                error: function err() {
+                    console.log("Error Mesage!!");
+                }
+            });
+            console.log(arrnew);
+            var _StoreData = new Blob([JSON.stringify(arr)], { type: "appliction/json" });
+            var Linkelement = document.createElement("a");
+            Linkelement.href = window.webkitURL.createObjectURL(_StoreData);
+            Linkelement.setAttribute("download", "employees.json");
+            document.body.appendChild(Linkelement);
+            Linkelement.click();
+            document.body.removeChild(Linkelement);
+        }
+
+
+
+
+    </script>
+
+
+
+
+
+</body>
+
+</html>

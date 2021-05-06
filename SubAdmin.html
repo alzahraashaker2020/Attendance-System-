@@ -1,0 +1,335 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link href="Content/bootstrap.css" rel="stylesheet" />
+    <style>
+       
+
+        body {
+            background-image: url(bg_Employee.jpg);
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        #sec {
+            width: 80%;
+            margin-top: 5%;
+            margin-bottom: 10%;
+            margin-right: 20%;
+            margin-left: 6%;
+            display: inline-flex;
+            align-content: center;
+        }
+
+        #container {
+            margin: auto;
+            align-content: center;
+            /* border: 4px solid darkblue; */
+            border-radius: 20px;
+            width: 100%;
+            display: block;
+            margin-top: 2.5%;
+            padding-right: 15%;
+
+        }
+
+
+
+        input[type="button"] {
+            border-radius: 10px;
+            width: 20%;
+            height: 60px;
+            margin-right: 5%;
+            /* rgb(214, 141, 200) */
+            background-color: rgb(214, 141, 200);
+            margin-left: 5%;
+
+        }
+
+        .card {
+            width: 60%;
+            margin-right: 5%;
+            border-radius: 20px;
+            background-color: rgb(214, 141, 200);
+            margin-top: 5%;
+        }
+
+
+        a {
+            color: white;
+        }
+
+        #container {
+            visibility: hidden;
+        }
+
+
+        input[type=text] {
+            border-radius: 4px;
+            border: 2px solid #e47f86;
+            width: 50%;
+            height: 30px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <section id="sec">
+            <input type="button" id="monthlyReportli" class="li col-3" value="Monthly Report" />
+            <input type="button" id="dialyReportli" class="li col-3" value="Dialy Report" />
+            <input type="button" id="attendaceReport" class="li col-3" value="Attendance" />
+        </section>
+    </div>
+    <div id="container" style=" visibility: visible;" class="col-12">
+        <div id="monthlyReportliBody" class="container card text-left">
+            <div class="card-body">
+                <label>
+                    <h5>Attend :</h5>
+                </label>
+                <span id="attend"></span><br /><br />
+                <label>
+                    <h5>Lates :</h5>
+                </label>
+                <span id="late"></span><br /><br />
+                <label>
+                    <h5>abbsent :</h5>
+                </label>
+                <span id="abbsent"></span><br /><br />
+            </div>
+        </div>
+        <div id="dialyReportliBody" class="container card text-left">
+            <div class="card-body">
+                <label>
+                    <h5>Employee Name :</h5>
+                </label>
+                <span id="spaName">value</span><br /><br />
+                <label>
+                    <h5>Attendance Time :</h5>
+                </label>
+                <span id="entTime">value</span><br /><br />
+            </div>
+        </div>
+        <div class="wraper" id="attendance">
+            <div id="setattendance" class="container card text-center">
+                <div class="container card-body text-center">
+                    <label>User code : </label>
+                    <input type="text" id="userattcode" />
+                    <br />
+                    <br />
+                    <input type="button" value="Confirm attend" id="btncon" />
+                    <input type="button" value="Save Data" id="savebtn"/>
+                </div>
+            </div>
+            <div id="viewattendance" class="container card text-center">
+                <div class="container card-body text-center">
+                    <label>
+                        <h5>Employee Name :</h5>
+                    </label>
+                    <span id="empName">value</span><br /><br />
+                    <label>
+                        <h5>attendance Time :</h5>
+                    </label>
+                    <span id="enterTime">value</span><br /><br />
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    </div>
+
+
+
+    <script>
+        window.addEventListener('load', function () {
+
+            var employee = document.getElementById("employee");
+            var monRep = document.getElementById("monRep");
+            var dayRep = document.getElementById("dayRep");
+            var attenRep = document.getElementById("attendance");
+            var setattendance = document.getElementById("setattendance");
+            var viewattendance = document.getElementById("viewattendance");
+            var userAttCode = document.getElementById("userattcode");
+            var confirmattendBtn = document.getElementById("btncon");
+            var empName = document.getElementById("empName");
+            var enterTime = document.getElementById("enterTime");
+
+            //get employee json file//
+            let _url = "employees.json";
+            let arr = [];
+            $.ajax({
+                url: _url,
+                type: "get",
+                success: function (data) {
+
+                    arr = data;
+                    console.log("json file", arr);
+
+                },
+                error: function err() {
+                    console.log("Error Mesage!!");
+                }
+            });//end of get json
+
+            $('#monthlyReportliBody').hide();
+            $('#dialyReportliBody').hide();
+            $('#setattendance').hide();
+            $('#viewattendance').hide();
+
+
+            $('#monthlyReportli').on('click', () => {
+                $('#monthlyReportliBody').show();
+                $('#dialyReportliBody').hide();
+                $('#setattendance').hide();
+                $('#viewattendance').hide();
+                for (var i = 0; i < arr.length; i++) {
+                    if (arr[i].userName == "esraaSA") {
+                        console.log(arr[i]);
+                        document.getElementById("attend").innerText = arr[i].attend;
+                        document.getElementById("late").innerText = arr[i].late;
+                        document.getElementById("abbsent").innerText = arr[i].absent;
+                    }
+                }
+            });
+            $('#dialyReportli').on('click', () => {
+                $('#monthlyReportliBody').hide();
+                $('#dialyReportliBody').show();
+                $('#setattendance').hide();
+                $('#viewattendance').hide();
+                for (var i = 0; i < arr.length; i++) {
+                    if (arr[i].userName == "esraaSA") {
+                        console.log(arr[i]);
+                        document.getElementById("spaName").innerText = arr[i].userName;
+                        document.getElementById("entTime").innerText = arr[i].dayAttend;
+                        //dayAttend
+                    }
+                }
+            });
+            $('#attendaceReport').on('click', () => {
+                $('#monthlyReportliBody').hide();
+                $('#dialyReportliBody').hide();
+                $('#setattendance').show();
+                $('#viewattendance').hide();
+
+            });
+
+
+
+
+            //button responsed for confirm attendance
+            var d = new Date();
+            var today = +new Date().getDate();
+            var time = new Date().toLocaleTimeString();
+            $('#btncon').on('click', () => {
+                user = getUser();
+
+                if (user) {
+                    //checkTime();
+                    var Today = user.Today;
+                    if (Today != today) {
+                        user.Today = today;
+                        user.dayAttend = time;
+                        var searchEorAM = d.toLocaleTimeString().includes("AM");
+                        //localStorage.setItem('ateendTime', time);
+                        //  x =today.toLocaleTimeString();
+                        var h = d.getHours();
+                        var m = d.getMinutes();
+
+                        countlate = +parseInt(user.late);
+                        countabsant = +parseInt(user.absent);
+                        countattend = +parseInt(user.attend);
+                        countExcuse = +parseInt(user.excuse);
+                        //"excuse": 0,
+                        if (h == 9 && searchEorPM) {
+                            if (m <= 15) {
+                                user.attend = countattend + 1;
+                                console.log("attend on time");
+                            }
+                            else if (m > 15 || m <= 55) {
+                                console.log(user.late);
+                                user.late = countlate + 1;
+                                console.log("ff");
+                                checkExcuse();
+
+                            }
+                            else {
+                                user.absent = countabsant + 1;
+                                console.log("pp");
+                                checkExcuse();
+                            }
+                        } else {
+                            user.absent = countabsant + 1;
+                            console.log("zzzzz");
+                            checkExcuse();
+                        }
+
+                        $('#viewattendance').show();
+                        empName.innerText = user.fname;
+                        enterTime.innerText = user.dayAttend;
+
+                       // SaveData();
+
+
+                    } else {
+                        alert("you take your attend");
+                    }
+
+                } else {
+                    alert("make sure that you entered vaild code");
+                }
+
+            });//end of confirmAttend
+
+
+            //check if userExist
+            function getUser() {
+                for (var i = 0; i < arr.length; i++) {
+                    if (arr[i].randomCode == userAttCode.value && arr[i].reallyEmp == 1) {
+                        return arr[i];
+                    }
+                }
+            }
+            //check if user have excuse
+            function checkExcuse() {
+                var excu = confirm("Do You Have any Excuse");
+                if (excu) {
+                    user.excuse = countExcuse + 1;
+                    console.log(user.excuse);
+                } else {
+                    user.excuse = countExcuse;
+                }
+            }
+
+            //save data in json file//
+            savebtn.addEventListener('click', function SaveData() {
+                console.log(arr);
+                var _StoreData = new Blob([JSON.stringify(arr)], { type: "appliction/json" });
+                var Linkelement = document.createElement("a");
+                Linkelement.href = window.webkitURL.createObjectURL(_StoreData);
+                Linkelement.setAttribute("download", "employees.json");
+                document.body.appendChild(Linkelement);
+                Linkelement.click();
+                document.body.removeChild(Linkelement);
+            });
+
+        });//end of load
+    </script>
+
+    <script src="Scripts/jquery-3.0.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.5.3/umd/popper.min.js"
+        integrity="sha512-53CQcu9ciJDlqhK7UD8dZZ+TF2PFGZrOngEYM/8qucuQba+a+BXOIRsp9PoMNJI3ZeLMVNIxIfZLbG/CdHI5PA=="
+        crossorigin="anonymous"></script>
+    <script src="Scripts/bootstrap.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,222 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link href="Content/bootstrap.css" rel="stylesheet" />
+    <style>
+        body {
+            background-image: url(bg_Employee.jpg);
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        #container {
+            align-content: center;
+            margin: auto;
+            border-radius: 20px;
+            width: 80%;
+            padding-top: 5%;
+        }
+
+        form {
+            align-content: center;
+            margin-bottom: 10%;
+            margin-top: 10%;
+            padding-left: 5%;
+        }
+
+
+        span {
+            /* margin-left: 25%; */
+            display: none;
+            color: red;
+            font: bold 12px tahoma;
+            text-align: center;
+        }
+
+        input[type="text"] {
+            width: 80%;
+            height: 30px;
+            border-radius: 10px;
+        }
+
+        input[type="password"] {
+            width: 80%;
+            height: 30px;
+            border-radius: 10px;
+        }
+
+        input[type="button"] {
+            border-radius: 10px;
+            width: 40%;
+            height: 30px;
+
+        }
+
+
+        #sec1 {
+            text-align: center;
+            margin: auto;
+            align-content: center;
+            border-radius: 20px;
+            width: 60%;
+            padding: 10px;
+            margin-bottom: 5%;
+            border: 2px solid purple;
+            background-color: rgb(214, 141, 200);
+            margin-top: 10%;
+        }
+
+
+        .error {
+            border: 4px solid red;
+        }
+
+        /* #spanNoLog{
+
+        }
+        */
+    </style>
+
+</head>
+
+<body>
+    <div id="container">
+        <section id="sec1">
+            <form>
+                <label>User Name :</label>
+                <input id="username" type="text" /><br />
+                <span id="spanemail">Not Correct User Name , letters only from 6 - 8 as length</span>
+                <br />
+                <label>Password&nbsp;&nbsp;:</label>
+                <input type="password" id="password" type="text" />
+                <span id="spanpass">Not Password , letters only from 6 - 8 as length</span><br /><br />
+                <input type="button" value="Login" class="btn btn-primary col-2" id="login" />
+                <span id="spanNoLog">it is not allowed for you</span>
+            </form>
+        </section>
+    </div>
+    <script>
+        // JavaScript source code
+        window.addEventListener('load', function () {
+            userName = document.getElementById("username");
+            password = document.getElementById("password");
+
+            spanemail = document.getElementById("spanemail");
+            spanpass = document.getElementById("spanpass");
+            spanNoLogin = document.getElementById("spanNoLog");
+
+            login = document.getElementById("login");
+
+            userName.addEventListener('blur', function () {
+                if (!isValidUserName()) {
+                    userName.focus();
+                    userName.select();
+                    spanemail.style.display = 'block';
+                    userName.className = 'error';
+                } else {
+                    userName.className = '';
+                    spanemail.style.display = 'none';
+                }
+            });//end of blure user name
+
+            password.addEventListener('blur', function () {
+                if (!isValidPass()) {
+                    password.focus();
+                    password.select();
+                    spanpass.style.display = 'block';
+                    password.className = 'error';
+                } else {
+                    password.className = '';
+                    spanpass.style.display = 'none';
+                }
+            });  //end of blure password
+
+
+            login.addEventListener('click', function (e) {
+                if (sheckUserEist()) {
+                    localStorage.setItem('userName', userName.value);
+                    console.log("you are here");
+                    if (userName.value == "esraaSA") {
+                        window.open("SubAdmin.html", "_self");
+                    }
+                    else if (userName.value == "alzahraaAA") {
+                        window.open("Admin.html", "_self");
+                    }
+                    else {
+                        window.open("EmployeePage.html", "_self");
+                    }
+                } else {
+                    spanNoLogin.style.display = 'block';
+                    return;
+                }
+
+            });//end of click login
+
+            //get json file
+            let _url = "employees.json";
+            let arr = [];
+            $.ajax({
+                url: _url,
+                type: "get",
+                success: function (data) {
+
+                    arr = data;
+                    console.log("json file", arr);
+
+                },
+                error: function err() {
+                    console.log("Error Mesage!!");
+                }
+            });//end of load json
+
+            //sheckUserExit function//
+            function sheckUserEist() {
+                for (i = 0; i < arr.length; i++) {
+                    if (arr[i].userName == userName.value && arr[i].password == password.value && arr[i].reallyEmp == 1) {
+                        return true;
+                    }
+                }
+            }
+
+            //save Data to json file
+            function SaveData() {
+                console.log(arr);
+                var _StoreData = new Blob([JSON.stringify(arr)], { type: "appliction/json" });
+                var Linkelement = document.createElement("a");
+                Linkelement.href = window.webkitURL.createObjectURL(_StoreData);
+                Linkelement.setAttribute("download", "employees.json");
+                document.body.appendChild(Linkelement);
+                Linkelement.click();
+                document.body.removeChild(Linkelement);
+            }
+
+
+
+        });//end of loading function
+        function isValidUserName() {
+            return userName.value.match(/^[a-zA-Z]{6,10}$/);
+        }
+        function isValidPass() {
+            return password.value.match(/^[A-Za-z0-9]{8}/g);
+
+        }
+
+
+
+
+    </script>
+    <script src="Scripts/jquery-3.0.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.5.3/umd/popper.min.js"
+        integrity="sha512-53CQcu9ciJDlqhK7UD8dZZ+TF2PFGZrOngEYM/8qucuQba+a+BXOIRsp9PoMNJI3ZeLMVNIxIfZLbG/CdHI5PA=="
+        crossorigin="anonymous"></script>
+    <script src="Scripts/bootstrap.js"></script>
+
+
+</body>
+
+</html>

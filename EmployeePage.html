@@ -1,0 +1,201 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link href="Content/bootstrap.css" rel="stylesheet" />
+    <!--<link href="Employee.css" rel="stylesheet" />-->
+    <style>
+        body {
+            background-image: url(bg_Employee.jpg);
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        ul {
+            display: inline-flex;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .li {
+            font-size: large;
+            cursor: pointer;
+
+        }
+
+        #empData {
+            background-color: white;
+        }
+
+        .card {
+            width: 60%;
+            border-radius: 20px;
+            background-color: rgb(214, 141, 200);
+            margin-top: 5%;
+        }
+
+        .navbar {
+            border: 4px solid rgb(214, 141, 200);
+            margin-top: 2.5%;
+            /*background-color: rgb(0,0,0,0.5);*/
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        a {
+            color: white;
+        }
+
+        #container {
+            visibility: hidden;
+        }
+
+        .span {
+            background-color: black;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <nav class="navbar navbar-inverse col-12 ">
+            <ul class="col-12">
+                <li id="empData" class="li  col-4"><span id="nameOfEmp"></span></li>
+                <li id="monthlyReport" class="li col-4">Monthly Report</li>
+                <li id="dailyReport" class="li col-4">Dialy Report</li>
+            </ul>
+        </nav>
+        <div id="container" class="col-12">
+            <div class="wraper" id="employee">emp
+            </div>
+            <div class="wraper" id="monRep">
+                <div id="viewMonthRep" class="container card text-center">
+                    <div class="container card-body text-center">
+                        <label>
+                            <h5>Attend :</h5>
+                        </label>
+                        <span id="attend">value</span><br /><br />
+                        <label>
+                            <h5>Lates :</h5>
+                        </label>
+                        <span id="late">value</span><br /><br />
+                        <label>
+                            <h5>abbsent :</h5>
+                        </label>
+                        <span id="abbsent">value</span><br /><br />
+                    </div>
+                </div>
+            </div>
+            <div class="wraper" id="dayRep">
+                <div id="viewAttendance" class="container card text-center">
+                    <div class="container card-body text-center">
+                        <label>
+                            <h5>Employee Name :</h5>
+                        </label>
+                        <span id="spanempName">value</span><br /><br />
+                        <label>
+                            <h5>Attendance Time :</h5>
+                        </label>
+                        <span id="enterTime">value</span><br /><br />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <script>
+            window.addEventListener('load', function () {
+                var empName = localStorage.getItem('userName');
+                var nameOfEmp = document.getElementById("nameOfEmp");
+                nameOfEmp.innerText = empName;
+                var dailyReport = document.getElementById("dailyReport");
+                var spanempName = document.getElementById("spanempName");
+                var employee = document.getElementById("employee");
+                var monRep = document.getElementById("monRep");
+                var dayRep = document.getElementById("dayRep");
+                var viewAttendance = document.getElementById("viewAttendance");
+                var viewMonthRep = document.getElementById("viewMonthRep");
+                var monthlyReport = document.getElementById("monthlyReport");
+                var attend = document.getElementById("attend");
+                var late = document.getElementById("late");
+                var abbsent = document.getElementById("abbsent");
+
+                //get employee json file//
+                let _url = "employees.json";
+                let arr = [];
+                $.ajax({
+                    url: _url,
+                    type: "get",
+                    success: function (data) {
+
+                        arr = data;
+                        console.log("json file", arr);
+
+                    },
+                    error: function err() {
+                        console.log("Error Mesage!!");
+                    }
+                });//end of get json
+
+
+                //get user name from local storage
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                }
+
+                //month report click
+                monthlyReport.addEventListener('click', function () {
+                    employee.style.visibility = "hidden";
+                    monRep.style.visibility = "visible";
+                    dayRep.style.visibility = "hidden";
+                    viewAttendance.style.visibility = "hidden"
+                    viewMonthRep.style.visibility = "visible"
+                    dayRep.style.height = 0;
+                    employee.style.height = 0;
+                    for (var i = 0; i < arr.length; i++) {
+                        if (arr[i].userName == empName) {
+                            attend.innerText = arr[i].attend;
+                            late.innerText = arr[i].late;
+                            abbsent.innerText = arr[i].absent;
+                        }
+                    }
+                });
+
+
+                //dialy report click
+                dailyReport.addEventListener('click', function () {
+                    var empName = localStorage.getItem('userName');
+                    employee.style.visibility = "hidden";
+                    monRep.style.visibility = "hidden";
+                    dayRep.style.visibility = "visible";
+                    viewAttendance.style.visibility = "visible"
+                    viewMonthRep.style.visibility = "hidden"
+                    for (var i = 0; i < arr.length; i++) {
+                        if (arr[i].userName == empName) {
+                            console.log(arr[i].userName);
+                            spanempName.innerText = empName;
+                            document.getElementById("enterTime").innerText = arr[i].dayAttend;
+
+                        }
+                    }
+
+                    monRep.style.height = 0;
+                    employee.style.height = 0;
+                });
+
+            });
+        </script>
+        <script src="Scripts/jquery-3.0.0.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.5.3/umd/popper.min.js"
+            integrity="sha512-53CQcu9ciJDlqhK7UD8dZZ+TF2PFGZrOngEYM/8qucuQba+a+BXOIRsp9PoMNJI3ZeLMVNIxIfZLbG/CdHI5PA=="
+            crossorigin="anonymous"></script>
+        <script src="Scripts/bootstrap.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,397 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link href="Content/bootstrap.css" rel="stylesheet" />
+
+    <style>
+        body {
+            background-image: url(bg_Employee.jpg);
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            text-align: center;
+            background-attachment: fixed;
+            /* padding: 2px; */
+        }
+
+        /* body {
+            padding: 2px;
+            text-align: center;
+        } */
+
+        div {
+            margin: auto;
+            align-content: center;
+            border: 4px solid darkblue;
+            border-radius: 20px;
+            width: 80%;
+            display: block;
+            margin-top: 2.5%;
+        }
+
+        form {
+            margin-bottom: 2.5%;
+            margin-top: 2.5%;
+            margin-left: 2.5%;
+        }
+
+        input[type=text],
+        input[type=password],
+        input[type="number"] {
+            border-radius: 4px;
+            border: 2px solid green;
+            width: 40%;
+            height: 50px;
+            margin-top: 5px;
+        }
+
+        label {
+            width: 10%;
+            height: 50px;
+            display: inline-block;
+        }
+
+        span {
+            margin-left: 15%;
+            display: none;
+            color: red;
+            font: bold 12px tahoma;
+        }
+
+        input[type=button] {
+            border: 4px solid rgb(214, 141, 200);
+            border-radius: 6px 6px;
+            width: 10%;
+            height: 10%;
+            padding-left: 10px;
+            margin-left: 50px;
+        }
+
+        .error {
+            border: 4px solid red;
+        }
+
+        #msg {
+            display: none;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <form>
+            <label for="fname"> First Name</label>
+            <input type="text" id="fname" placeholder="Please enter your first name" /><br />
+            <span id="spanftxt">Not Correct User Name , letters only from 6 - 8 as length</span>
+            <label> Last Name</label>
+            <input type="text" id="lname" placeholder="Please enter your last name" /><br />
+            <span id="spanltxt">Not Correct User Name , letters only from 6 - 8 as length</span>
+            <label> Email </label>
+            <input type="text" id="email" placeholder="Please enter your email" /><br />
+            <span id="spanemail">Required</span>
+            <label> Address </label>
+            <input type="text" id="address" placeholder="Please enter your address" /><br />
+            <span id="spanaddress">Not Correct User Name , letters only from 6 - 8 as length</span>
+            <label> Age </label>
+            <input type="number" max="60" min="22" placeholder="Please Enter your Age" id="age" />
+            <br />
+            <span id="spanage">Not Correct User Name , letters only from 6 - 8 as length</span>
+            <label>User&nbsp;Name</label>
+            <input id="userName" type="text" placeholder="Please enter your user name" /><br />
+            <span id="spanusername">Not Correct User Name , letters only from 6 - 8 as length</span>
+            <label>Password&nbsp;</label>
+            <input type="password" id="password" type="text" placeholder="Please enter your password" />
+            <span id="spanpass">Not Password , letters only from 6 - 8 as length</span><br /><br />
+            <input type="button" value="Register" id="registerHome"></input>
+            <input type="button" value="Login" id="loginHome"></input>
+            <div id="msg">
+                <pre></pre>
+                you have regesterd before
+            </div>
+        </form>
+
+
+
+    </div>
+    <script src="Scripts/jquery-3.0.0.min.js"></script>
+    <script src="jquery-3.5.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.5.3/umd/popper.min.js"
+        integrity="sha512-53CQcu9ciJDlqhK7UD8dZZ+TF2PFGZrOngEYM/8qucuQba+a+BXOIRsp9PoMNJI3ZeLMVNIxIfZLbG/CdHI5PA=="
+        crossorigin="anonymous"></script>
+    <script src="Scripts/bootstrap.js"></script>
+
+    <script>
+
+        window.addEventListener('load', function () {
+            firstname = document.getElementById('fname');
+            lastname = document.getElementById("lname");
+            email = document.getElementById("email");
+            address = document.getElementById("address");
+            age = document.getElementById("age");
+            msage = document.getElementById("msg");
+            userName = document.getElementById("userName");
+            password = document.getElementById("password");
+            buttonRegister = document.getElementById("registerHome");
+            loginBtn = document.getElementById("loginHome");
+
+            spanfirstName = document.getElementById("spanftxt");
+            spanlastName = document.getElementById("spanltxt");
+            spanemail = document.getElementById("spanemail");
+            spanAddress = document.getElementById("spanaddress");
+            spanAge = document.getElementById("spanage");
+            spanusername = document.getElementById("spanusername");
+            spanpass = document.getElementById("spanpass");
+
+            //open to another page//
+            loginBtn.addEventListener('click', function () {
+                window.open("LoginPage.html", "_self");
+            })
+
+
+            firstname.addEventListener('blur', function () {
+                if (!isValidFirstName()) {
+                    firstname.focus();
+                    firstname.select();
+                    spanfirstName.style.display = 'block';
+                    firstname.className = 'error';
+                } else {
+                    firstname.className = '';
+                    spanfirstName.style.display = 'none';
+                }
+            });//end of blure first name
+
+            lastname.addEventListener('blur', function () {
+                if (!isValidLastName()) {
+                    lastname.focus();
+                    lastname.select();
+                    spanltxt.style.display = 'block';
+                    lastname.className = 'error';
+                } else {
+                    lastname.className = '';
+                    spanemail.style.display = 'none';
+                }
+            });//end of blure last name
+
+            email.addEventListener('blur', function () {
+                if (!isValidEmail()) {
+                    email.focus();
+                    email.select();
+                    spanemail.style.display = 'block';
+                    email.className = 'error';
+                } else {
+                    email.className = '';
+                    spanemail.style.display = 'none';
+                }
+            });//end of blure email
+
+            address.addEventListener('blur', function () {
+                if (!isValidAddress()) {
+                    address.focus();
+                    address.select();
+                    spanAddress.style.display = 'block';
+                    address.className = 'error';
+                } else {
+                    address.className = '';
+                    spanAddress.style.display = 'none';
+                }
+            });//end of blure address
+
+            age.addEventListener('blur', function () {
+                if (!isValidAge()) {
+                    age.focus();
+                    age.select();
+                    spanAge.style.display = 'block';
+                    age.className = 'error';
+                } else {
+                    age.className = '';
+                    spanAge.style.display = 'none';
+                }
+            });//end of blure Age
+            userName.addEventListener('blur', function () {
+                if (!isValidUserName()) {
+                    userName.focus();
+                    userName.select();
+                    spanusername.style.display = 'block';
+                    userName.className = 'error';
+                } else {
+                    userName.className = '';
+                    spanusername.style.display = 'none';
+                }
+            });//end of blure user name
+
+            password.addEventListener('blur', function () {
+                if (!isValidPass()) {
+                    password.focus();
+                    password.select();
+                    spanpass.style.display = 'block';
+                    password.className = 'error';
+                } else {
+                    password.className = '';
+                    spanpass.style.display = 'none';
+                }
+            });//end of blure password
+
+
+            buttonRegister.addEventListener('click', function (e) {
+
+                if (!(isValidFirstName() && isValidUserName() && isValidAddress() && isValidEmail() && isValidLastName() && isValidAge())) {
+                    e.preventDefault();
+                }
+                if (!isValidFirstName()) {
+                    firstname.focus();
+                    spanfirstName.style.display = 'block';
+                }
+                if (!isValidLastName()) {
+                    lastname.focus();
+                }
+                if (!isValidAddress()) {
+                    address.focus();
+                }
+                if (!isValidEmail()) {
+                    email.focus();
+                }
+                if (!isValidAge()) {
+                    age.focus();
+                }
+                if (!isValidUserName()) {
+                    userName.focus();
+                }
+                if (!isValidPass()) {
+                    password.focus();
+                }
+                if (isValidPass() && isValidUserName() && isValidEmail() && isValidAddress() && isValidLastName() && isValidFirstName()) {
+                    addEmployee();
+
+                }
+
+            }); //end of click register
+
+
+            //get json file//
+            let _url = "employees.json";
+            let arr = [];
+            $.ajax({
+                url: _url,
+                type: "get",
+                success: function (data) {
+
+                    arr = data;
+                    console.log("json file", arr);
+
+                },
+                error: function err() {
+                    console.log("Error Mesage!!");
+                }
+            });
+
+            //Save Data entered from user in object//
+            function addEmployee() {
+                let employee = {
+                    "fname": firstname.value,
+                    "lname": lastname.value,
+                    "email": email.value,
+                    "address": address.value,
+                    "age": age.value,
+                    "userName": userName.value,
+                    "password": password.value,
+                    "randomCode": creatRand(),
+                    "reallyEmp": 0,
+                    "dayAttend": 0,
+                    "Today": 0,
+                    "excuse": 0,
+                    "absent": 1,
+                    "attend": 1,
+                    "late": 1
+                };
+                if (!sheckRepeatedReg()) {
+                    arr.push(employee);
+                    SaveData();
+                    document.forms[0].reset();
+                    console.log("done");
+                }
+                else {
+                    msage.style.display = 'block';
+                }
+            }
+            //check if user regester before or not//
+
+            function sheckRepeatedReg() {
+                for (i = 0; i < arr.length; i++) {
+                    if (arr[i].fname == firstname.value && arr[i].lname == lastname.value && arr[i].email == email.value && arr[i].address == address.value && arr[i].age == age.value && arr[i].userName == userName.value && arr[i].password == password.value) {
+                        return true;
+                    }
+                }
+            }
+
+            //save data in json file//
+            function SaveData() {
+                console.log(arr);
+                var _StoreData = new Blob([JSON.stringify(arr)], { type: "appliction/json" });
+                var Linkelement = document.createElement("a");
+                Linkelement.href = window.webkitURL.createObjectURL(_StoreData);
+                Linkelement.setAttribute("download", "employees.json");
+                document.body.appendChild(Linkelement);
+                Linkelement.click();
+                document.body.removeChild(Linkelement);
+            }
+
+            //function createRandumNumber
+            function creatRand() {
+                var x = Math.floor(Math.random() * 100001);
+                if (checkuserCode(x)) {
+                    return x;
+                }
+                else {
+                    return creatRand();
+                }
+            }
+
+            //fuctionCheckRandumNumber
+            function checkuserCode(x) {
+                for (var i = 0; i < arr.length; i++) {
+                    if (arr[i].randomCode.value == x) {
+                        return false;
+                    }
+                }
+                return true;
+
+            }
+
+        });//end of load
+
+        //validation of form functions//
+        function isValidFirstName() {
+            return firstname.value.match(/^[A-Za-z]{4,10}$/);
+        }
+
+        function isValidLastName() {
+            return lastname.value.match(/^[A-Za-z]{4,8}$/);
+        }
+        function isValidEmail() {
+            return email.value.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/);
+
+        }
+        function isValidAddress() {
+            return address.value.match(/^[a-zA-Z]{6,9}$/);
+
+        }
+        function isValidAge() {
+            return age.value.match(/^2[0-9]|3[0-9]|4[0-9]|5[00]$/);
+
+        }
+        function isValidUserName() {
+            return userName.value.match(/^[a-zA-Z]{4,12}$/);
+
+        }
+        function isValidPass() {
+            return password.value.match(/^[A-Za-z0-9]{8}/g);
+        }
+    </script>
+
+</body>
+
+</html>
